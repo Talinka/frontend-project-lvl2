@@ -1,7 +1,7 @@
 #! /usr/bin/env node
 
 import program from 'commander';
-
+import genDiff from '..';
 
 let firstConfig;
 let secondConfig;
@@ -20,12 +20,16 @@ program
 program.parse(process.argv);
 
 if (typeof firstConfig === 'undefined') {
-  console.error('error: no configs name given!');
+  console.error('error: no config names given!');
   process.exit(1);
 }
 
-console.log('first config:', firstConfig);
-console.log('second config:', secondConfig);
-if (program.format) {
-  console.log('format', program.format);
-}
+/* console.log('first config:', firstConfig);
+  console.log('second config:', secondConfig);
+  if (program.format) {
+    console.log('format', program.format);
+  }
+*/
+
+const result = genDiff(firstConfig, secondConfig);
+console.log(result);
