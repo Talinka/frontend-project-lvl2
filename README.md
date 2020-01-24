@@ -8,3 +8,7 @@
 Comparing plain json files:
 
 [![asciicast](https://asciinema.org/a/ikiYx3nZY9ZUTKp2mLXgUYtHV.svg)](https://asciinema.org/a/ikiYx3nZY9ZUTKp2mLXgUYtHV)
+
+Comparing plain yml files:
+
+[![asciicast](https://asciinema.org/a/dXsJjSDhNLVRqIx9Hf7xv14jc.svg)](https://asciinema.org/a/dXsJjSDhNLVRqIx9Hf7xv14jc)
