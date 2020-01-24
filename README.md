@@ -12,3 +12,7 @@ Comparing plain json files:
 Comparing plain yml files:
 
 [![asciicast](https://asciinema.org/a/dXsJjSDhNLVRqIx9Hf7xv14jc.svg)](https://asciinema.org/a/dXsJjSDhNLVRqIx9Hf7xv14jc)
+
+Comparing plain ini files:
+
+[![asciicast](https://asciinema.org/a/Y1WyaFuC7SldU8cukqIgt3pNQ.svg)](https://asciinema.org/a/Y1WyaFuC7SldU8cukqIgt3pNQ)

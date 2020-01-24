@@ -1,11 +1,12 @@
 import { readFileSync } from 'fs';
 import path from 'path';
 import yaml from 'js-yaml';
-// import ini from 'ini';
+import ini from 'ini';
 
 const parser = {
   json: JSON.parse,
   yml: yaml.safeLoad,
+  ini: ini.parse,
 };
 
 const getDataObj = (configPath) => {
