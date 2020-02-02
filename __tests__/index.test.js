@@ -6,7 +6,7 @@ import getDataObj from '../src/parsers';
 
 const fixPath = path.join(__dirname, '../__fixtures__');
 const result = readFileSync(`${fixPath}/result.txt`, 'utf-8');
-const plainResult = readFileSync(`${fixPath}/plain_result.txt`, 'utf-8');
+const plainResult = readFileSync(`${fixPath}/result_plain.txt`, 'utf-8');
 
 const json1 = `${fixPath}/before.json`;
 const json2 = `${fixPath}/after.json`;
@@ -22,6 +22,16 @@ describe('test tree format', () => {
     [ini1, ini2, result],
   ])('comparing(%s, %s)', (before, after, expected) => {
     expect(gendiff(before, after)).toBe(expected);
+  });
+});
+
+describe('test plain format', () => {
+  test.each([
+    [json1, json2, plainResult],
+    [yml1, yml2, plainResult],
+    [ini1, ini2, plainResult],
+  ])('comparing(%s, %s)', (before, after, expected) => {
+    expect(gendiff(before, after, 'plain')).toBe(expected);
   });
 });
 
