@@ -16,3 +16,7 @@ Comparing plain yml files:
 Comparing plain ini files:
 
 [![asciicast](https://asciinema.org/a/Y1WyaFuC7SldU8cukqIgt3pNQ.svg)](https://asciinema.org/a/Y1WyaFuC7SldU8cukqIgt3pNQ)
+
+Comparing conplex config files:
+
+[![asciicast](https://asciinema.org/a/O55irIOS8Cu2tc8g6otusRCOp.svg)](https://asciinema.org/a/O55irIOS8Cu2tc8g6otusRCOp)

@@ -1,13 +1,16 @@
-import getDataObj from './parsers';
-import genObjDiff from './genObjDiff';
+import parse from './parsers';
+import buildDiff from './builder';
+import render from './formatters';
 
-const genDiff = (file1, file2) => {
+const genDiff = (file1, file2, format = 'tree') => {
   try {
-    const config1 = getDataObj(file1);
-    const config2 = getDataObj(file2);
-    return genObjDiff(config1, config2);
+    const config1 = parse(file1);
+    const config2 = parse(file2);
+    const diff = buildDiff(config1, config2);
+    return render(diff, format);
   } catch (err) {
-    return err.message;
+    console.log(err.message);
+    throw err;
   }
 };
 

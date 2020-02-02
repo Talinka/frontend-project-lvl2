@@ -6,15 +6,16 @@ import genDiff from '..';
 let firstConfig;
 let secondConfig;
 
-// const program = new commander.Command();
 program
   .version('0.0.1')
   .description('Compares two configuration files and shows a difference.')
-  .option('-f, --format [type]', 'output format')
+  .option('-f, --format [type]', 'output format', 'tree')
   .arguments('<firstCongif> <secondConfig>')
   .action((firstConf, secondConf) => {
     firstConfig = firstConf;
     secondConfig = secondConf;
+    const result = genDiff(firstConfig, secondConfig, program.format);
+    console.log(result);
   });
 
 program.parse(process.argv);
@@ -23,13 +24,3 @@ if (typeof firstConfig === 'undefined') {
   console.error('error: no config names given!');
   process.exit(1);
 }
-
-/* console.log('first config:', firstConfig);
-  console.log('second config:', secondConfig);
-  if (program.format) {
-    console.log('format', program.format);
-  }
-*/
-
-const result = genDiff(firstConfig, secondConfig);
-console.log(result);
