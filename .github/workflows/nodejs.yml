@@ -1,0 +1,22 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: npm install, build, and test
+      run: |
+        make install
+        make build
+        make test
+      env:
+        CI: true
+    - name: Run linter
+      run: |
+        make lint
+        echo test, and deploy your project.
