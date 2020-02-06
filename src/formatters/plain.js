@@ -7,34 +7,31 @@ const getValueStr = (val) => {
   return (typeof val === 'string') ? `'${val}'` : val;
 };
 
-const stringify = (key, info) => {
+const stringify = (key, { state, value, oldValue }) => {
   const base = `Property '${key}' was`;
-  switch (info.state) {
+  switch (state) {
     case 'added':
-      return `${base} added with value: ${getValueStr(info.value)}`;
+      return `${base} added with value: ${getValueStr(value)}`;
     case 'deleted':
       return `${base} deleted`;
     case 'changed':
-      return `${base} changed from ${getValueStr(info.oldValue)} to ${getValueStr(info.value)}`;
+      return `${base} changed from ${getValueStr(oldValue)} to ${getValueStr(value)}`;
     default:
       return '';
   }
 };
 
 const render = (diffObj) => {
-  const iter = (obj, accKey) => {
-    const items = Object.entries(obj);
-    return items
-      .map(([key, info]) => {
-        const newKey = (accKey) ? `${accKey}.${key}` : key;
-        if (has(info, 'children')) {
-          return iter(info.children, newKey);
-        }
-        return stringify(newKey, info);
-      })
-      .filter((x) => x)
-      .join('\n');
-  };
+  const iter = (obj, accKey) => obj
+    .map((item) => {
+      const newKey = (accKey) ? `${accKey}.${item.key}` : item.key;
+      if (has(item, 'children')) {
+        return iter(item.children, newKey);
+      }
+      return stringify(newKey, item);
+    })
+    .filter((x) => x)
+    .join('\n');
 
   return iter(diffObj);
 };

@@ -11,19 +11,19 @@ const stringifyVal = (value, level) => {
   return `{\n${lines.join('\n')}\n${i}}`;
 };
 
-const stringifyItem = ([key, info], level) => {
+const stringifyItem = (item, level) => {
   const offset = indent.repeat(level - 1);
-  const infoStr = (value) => `${key}: ${stringifyVal(value, level)}`;
-  switch (info.state) {
+  const infoStr = (value) => `${item.key}: ${stringifyVal(value, level)}`;
+  switch (item.state) {
     case 'added':
-      return `${offset}  + ${infoStr(info.value)}`;
+      return `${offset}  + ${infoStr(item.value)}`;
     case 'deleted':
-      return `${offset}  - ${infoStr(info.value)}`;
+      return `${offset}  - ${infoStr(item.value)}`;
     case 'unchanged':
-      return `${offset}    ${infoStr(info.value)}`;
+      return `${offset}    ${infoStr(item.value)}`;
     case 'changed':
-      return `${offset}  + ${infoStr(info.value)}\n`
-        + `${offset}  - ${infoStr(info.oldValue)}`;
+      return `${offset}  + ${infoStr(item.value)}\n`
+        + `${offset}  - ${infoStr(item.oldValue)}`;
     default:
       return null;
   }
@@ -31,12 +31,12 @@ const stringifyItem = ([key, info], level) => {
 
 const render = (diffObj) => {
   const iter = (node, level = 1) => {
-    const result = Object.entries(node).map(([key, info]) => {
-      if (has(info, 'children')) {
+    const result = node.map((item) => {
+      if (has(item, 'children')) {
         const i = indent.repeat(level);
-        return `${i}${key}: {\n${iter(info.children, level + 1)}\n${i}}`;
+        return `${i}${item.key}: {\n${iter(item.children, level + 1)}\n${i}}`;
       }
-      return stringifyItem([key, info], level);
+      return stringifyItem(item, level);
     });
     return result.join('\n');
   };
