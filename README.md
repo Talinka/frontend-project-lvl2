@@ -23,3 +23,7 @@ Comparing complex config files:
 Output of comparing result in plain format
 
 [![asciicast](https://asciinema.org/a/WCsJF9iQqBOXcHmCUCsaHHOzh.svg)](https://asciinema.org/a/WCsJF9iQqBOXcHmCUCsaHHOzh)
+
+Output of comparing result in json format
+
+[![asciicast](https://asciinema.org/a/E9LmNc3wWvJXVPFnMAxg910Yu.svg)](https://asciinema.org/a/E9LmNc3wWvJXVPFnMAxg910Yu)

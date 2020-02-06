@@ -18,9 +18,8 @@ program
     console.log(result);
   });
 
-program.parse(process.argv);
-
-if (typeof firstConfig === 'undefined') {
-  console.error('error: no config names given!');
-  process.exit(1);
+try {
+  program.parse(process.argv);
+} catch (err) {
+  console.log(err.message);
 }

@@ -1,12 +1,11 @@
+import { trim } from 'lodash';
 import { readFileSync } from 'fs';
 import path from 'path';
-import gendiff from '../src';
 
+import gendiff from '../src';
 import getDataObj from '../src/parsers';
 
 const fixPath = path.join(__dirname, '../__fixtures__');
-const result = readFileSync(`${fixPath}/result.txt`, 'utf-8');
-const plainResult = readFileSync(`${fixPath}/result_plain.txt`, 'utf-8');
 
 const json1 = `${fixPath}/before.json`;
 const json2 = `${fixPath}/after.json`;
@@ -15,7 +14,18 @@ const yml2 = `${fixPath}/after.yml`;
 const ini1 = `${fixPath}/before.ini`;
 const ini2 = `${fixPath}/after.ini`;
 
-describe('test tree format', () => {
+describe('test parsers', () => {
+  const jsonObj = getDataObj(json2);
+  const ymlObj = getDataObj(yml2);
+  const iniObj = getDataObj(ini2);
+  test('parsers', () => {
+    expect(ymlObj).toEqual(jsonObj);
+    expect(iniObj).toEqual(jsonObj);
+  });
+});
+
+describe('test tree formatter', () => {
+  const result = readFileSync(`${fixPath}/result.txt`, 'utf-8');
   test.each([
     [json1, json2, result],
     [yml1, yml2, result],
@@ -25,7 +35,8 @@ describe('test tree format', () => {
   });
 });
 
-describe('test plain format', () => {
+describe('test plain formatter', () => {
+  const plainResult = readFileSync(`${fixPath}/result_plain.txt`, 'utf-8');
   test.each([
     [json1, json2, plainResult],
     [yml1, yml2, plainResult],
@@ -35,12 +46,16 @@ describe('test plain format', () => {
   });
 });
 
-describe('test parsers', () => {
-  const jsonObj = getDataObj(json2);
-  const ymlObj = getDataObj(yml2);
-  const iniObj = getDataObj(ini2);
-  test('parsers', () => {
-    expect(ymlObj).toEqual(jsonObj);
-    expect(iniObj).toEqual(jsonObj);
+describe('test json formatter', () => {
+  const json = readFileSync(`${fixPath}/result_json.txt`, 'utf-8');
+  // delete all spaces
+  const jsonResult = json.split('\n').map(trim).join('');
+
+  test.each([
+    [json1, json2, jsonResult],
+    [yml1, yml2, jsonResult],
+    [ini1, ini2, jsonResult],
+  ])('comparing(%s, %s)', (before, after, expected) => {
+    expect(gendiff(before, after, 'json')).toBe(expected);
   });
 });

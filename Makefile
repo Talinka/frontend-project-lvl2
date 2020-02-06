@@ -7,6 +7,7 @@ build:
 
 publish:
 	npm publish ---dry-run
+	npm link
 
 start:
 	npx babel-node src/bin/gendiff.js
