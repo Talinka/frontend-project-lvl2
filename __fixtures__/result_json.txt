@@ -50,11 +50,9 @@
             "value":"vops",
             "state":"added"
           }
-        ],
-        "state":"unchanged"
+        ]
       }
-    ],
-    "state":"unchanged"
+    ]
   },
   {
     "key":"group1",
@@ -78,8 +76,7 @@
         },
         "state":"changed"
       }
-    ],
-    "state":"unchanged"
+    ]
   },
   {
     "key":"group2",

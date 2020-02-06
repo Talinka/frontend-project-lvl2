@@ -9,7 +9,7 @@ const formatters = {
   json: jsonRender,
 };
 
-const render = (obj, format = 'tree') => {
+const render = (obj, format) => {
   const provedFormat = has(formatters, format) ? format : 'tree';
   return formatters[provedFormat](obj);
 };
