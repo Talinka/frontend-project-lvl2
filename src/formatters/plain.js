@@ -1,5 +1,3 @@
-import { has } from 'lodash';
-
 const getValueStr = (val) => {
   if (val instanceof Object) {
     return '[complex value]';
@@ -7,8 +5,8 @@ const getValueStr = (val) => {
   return (typeof val === 'string') ? `'${val}'` : val;
 };
 
-const stringify = (key, { state, value, oldValue }) => {
-  const base = `Property '${key.join('.')}' was`;
+const stringify = (keys, { state, value, oldValue }) => {
+  const base = `Property '${keys.join('.')}' was`;
   switch (state) {
     case 'added':
       return `${base} added with value: ${getValueStr(value)}`;
