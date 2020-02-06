@@ -8,7 +8,7 @@ const getValueStr = (val) => {
 };
 
 const stringify = (key, { state, value, oldValue }) => {
-  const base = `Property '${key}' was`;
+  const base = `Property '${key.join('.')}' was`;
   switch (state) {
     case 'added':
       return `${base} added with value: ${getValueStr(value)}`;
@@ -22,18 +22,15 @@ const stringify = (key, { state, value, oldValue }) => {
 };
 
 const render = (diffObj) => {
-  const iter = (obj, accKey) => obj
+  const iter = (accKeys, obj) => obj
     .map((item) => {
-      const newKey = (accKey) ? `${accKey}.${item.key}` : item.key;
-      if (has(item, 'children')) {
-        return iter(item.children, newKey);
-      }
-      return stringify(newKey, item);
+      const newKey = [...accKeys, item.key];
+      return (item.children) ? iter(newKey, item.children) : stringify(newKey, item);
     })
     .filter((x) => x)
     .join('\n');
 
-  return iter(diffObj);
+  return iter([], diffObj);
 };
 
 export default render;
