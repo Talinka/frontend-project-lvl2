@@ -3,7 +3,6 @@ import { readFileSync } from 'fs';
 import path from 'path';
 
 import gendiff from '../src';
-import getDataObj from '../src/parsers';
 
 const fixPath = path.join(__dirname, '../__fixtures__');
 
@@ -13,16 +12,6 @@ const yml1 = `${fixPath}/before.yml`;
 const yml2 = `${fixPath}/after.yml`;
 const ini1 = `${fixPath}/before.ini`;
 const ini2 = `${fixPath}/after.ini`;
-
-describe('test parsers', () => {
-  const jsonObj = getDataObj(json2);
-  const ymlObj = getDataObj(yml2);
-  const iniObj = getDataObj(ini2);
-  test('parsers', () => {
-    expect(ymlObj).toEqual(jsonObj);
-    expect(iniObj).toEqual(jsonObj);
-  });
-});
 
 describe('test tree formatter', () => {
   const result = readFileSync(`${fixPath}/result.txt`, 'utf-8');
