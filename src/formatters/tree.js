@@ -7,7 +7,8 @@ const stringifyVal = (value, level) => {
   if (!(value instanceof Object)) {
     return value;
   }
-  const lines = Object.entries(value).map(([key, val]) => `${i}${indent}${key}: ${stringifyVal(val, level + 1)}`);
+  const lines = Object.entries(value)
+    .map(([key, val]) => `${i}${indent}${key}: ${stringifyVal(val, level + 1)}`);
   return `{\n${lines.join('\n')}\n${i}}`;
 };
 
@@ -30,17 +31,18 @@ const stringifyItem = (item, level) => {
 };
 
 const render = (diffObj) => {
-  const iter = (node, level = 1) => {
-    const result = node.map((item) => {
+  const iter = (obj, level = 1) => {
+    const i = indent.repeat(level);
+    const result = obj.map((item) => {
       if (has(item, 'children')) {
-        const i = indent.repeat(level);
-        return `${i}${item.key}: {\n${iter(item.children, level + 1)}\n${i}}`;
+        return `${i}${item.key}: ${iter(item.children, level + 1)}`;
       }
       return stringifyItem(item, level);
     });
-    return result.join('\n');
+    return `{\n${result.join('\n')}\n${indent.repeat(level - 1)}}`;
   };
-  return `{\n${iter(diffObj)}\n}`;
+
+  return iter(diffObj);
 };
 
 export default render;
