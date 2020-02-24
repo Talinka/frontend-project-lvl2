@@ -1,3 +1,4 @@
+import { has } from 'lodash';
 import yaml from 'js-yaml';
 import ini from 'ini';
 
@@ -7,6 +8,11 @@ const parser = {
   ini: ini.parse,
 };
 
-const getDataObj = (data, format) => parser[format](data);
+const getDataObj = (data, format) => {
+  if (!has(parser, format)) {
+    throw new Error(`Unknown config fromat: ${format}`);
+  }
+  return parser[format](data);
+};
 
 export default getDataObj;

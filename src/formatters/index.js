@@ -10,8 +10,10 @@ const formatters = {
 };
 
 const render = (obj, format) => {
-  const provedFormat = has(formatters, format) ? format : 'tree';
-  return formatters[provedFormat](obj);
+  if (!has(formatters, format)) {
+    throw new Error(`Unknown output format: ${format}`);
+  }
+  return formatters[format](obj);
 };
 
 export default render;

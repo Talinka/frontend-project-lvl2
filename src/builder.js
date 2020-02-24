@@ -1,24 +1,30 @@
 import { has, union } from 'lodash';
 
+const buildSimpleNode = (key, value, state) => ({
+  key,
+  value,
+  state,
+  type: 'simple',
+});
+
 const buildDiff = (obj1, obj2) => {
   const keys = union(Object.keys(obj1), Object.keys(obj2)).sort();
 
   const diffs = keys.map((key) => {
     if (has(obj1, key) && has(obj2, key)) {
       if (obj1[key] instanceof Object && obj2[key] instanceof Object) {
-        return { key, children: buildDiff(obj1[key], obj2[key]) };
+        return { key, children: buildDiff(obj1[key], obj2[key]), type: 'complex' };
       }
       if (obj1[key] !== obj2[key]) {
-        return {
-          key, value: obj2[key], oldValue: obj1[key], state: 'changed',
-        };
+        const node = buildSimpleNode(key, obj2[key], 'changed');
+        return { ...node, oldValue: obj1[key] };
       }
-      return { key, value: obj1[key], state: 'unchanged' };
+      return buildSimpleNode(key, obj1[key], 'unchanged');
     }
     if (has(obj1, key)) {
-      return { key, value: obj1[key], state: 'deleted' };
+      return buildSimpleNode(key, obj1[key], 'deleted');
     }
-    return { key, value: obj2[key], state: 'added' };
+    return buildSimpleNode(key, obj2[key], 'added');
   });
 
   return diffs;

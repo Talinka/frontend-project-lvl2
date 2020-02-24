@@ -1,3 +1,3 @@
-const render = (diffObj) => JSON.stringify(diffObj);
+const render = JSON.stringify;
 
 export default render;

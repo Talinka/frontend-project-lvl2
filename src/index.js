@@ -7,7 +7,7 @@ import render from './formatters';
 const getConfigData = (configPath) => {
   const ext = path.extname(configPath);
   return {
-    dataFormat: (ext ? ext.slice(1) : 'json'),
+    dataFormat: ext.slice(1),
     data: readFileSync(configPath, 'utf-8'),
   };
 };

@@ -1,19 +1,16 @@
-import { has } from 'lodash';
-
-const indent = '    ';
+const getOffset = (level) => ' '.repeat(4 * level);
 
 const stringifyVal = (value, level) => {
-  const i = indent.repeat(level);
   if (!(value instanceof Object)) {
     return value;
   }
   const lines = Object.entries(value)
-    .map(([key, val]) => `${i}${indent}${key}: ${stringifyVal(val, level + 1)}`);
-  return `{\n${lines.join('\n')}\n${i}}`;
+    .map(([key, val]) => `${getOffset(level + 1)}${key}: ${stringifyVal(val, level + 1)}`);
+  return `{\n${lines.join('\n')}\n${getOffset(level)}}`;
 };
 
 const stringifyItem = (item, level) => {
-  const offset = indent.repeat(level - 1);
+  const offset = getOffset(level - 1);
   const infoStr = (value) => `${item.key}: ${stringifyVal(value, level)}`;
   switch (item.state) {
     case 'added':
@@ -26,20 +23,19 @@ const stringifyItem = (item, level) => {
       return `${offset}  + ${infoStr(item.value)}\n`
         + `${offset}  - ${infoStr(item.oldValue)}`;
     default:
-      return null;
+      throw new Error(`Unknown state: ${item.state}`);
   }
 };
 
 const render = (diffObj) => {
   const iter = (obj, level = 1) => {
-    const i = indent.repeat(level);
     const result = obj.map((item) => {
-      if (has(item, 'children')) {
-        return `${i}${item.key}: ${iter(item.children, level + 1)}`;
+      if (item.type === 'complex') {
+        return `${getOffset(level)}${item.key}: ${iter(item.children, level + 1)}`;
       }
       return stringifyItem(item, level);
     });
-    return `{\n${result.join('\n')}\n${indent.repeat(level - 1)}}`;
+    return `{\n${result.join('\n')}\n${getOffset(level - 1)}}`;
   };
 
   return iter(diffObj);

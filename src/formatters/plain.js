@@ -14,8 +14,10 @@ const stringify = (keys, { state, value, oldValue }) => {
       return `${base} deleted`;
     case 'changed':
       return `${base} changed from ${getValueStr(oldValue)} to ${getValueStr(value)}`;
-    default:
+    case 'unchanged':
       return '';
+    default:
+      throw new Error(`Unknown state: ${state}`);
   }
 };
 
@@ -23,7 +25,7 @@ const render = (diffObj) => {
   const iter = (accKeys, obj) => obj
     .map((item) => {
       const newKey = [...accKeys, item.key];
-      return (item.children) ? iter(newKey, item.children) : stringify(newKey, item);
+      return (item.type === 'complex') ? iter(newKey, item.children) : stringify(newKey, item);
     })
     .filter((x) => x)
     .join('\n');

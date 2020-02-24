@@ -13,8 +13,11 @@ program
     console.log(result);
   });
 
+program.exitOverride();
+
 try {
   program.parse(process.argv);
 } catch (err) {
-  console.log(err.message);
+  console.error(err.message);
+  process.exit(1);
 }
