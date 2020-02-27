@@ -10,18 +10,18 @@ const formats = ['json', 'yml', 'ini'];
 describe('test tree formatter', () => {
   const expected = readFile('result.txt');
   test.each(formats)('compare %s files', (format) => {
-    const before = getFixturePath(`before.${format}`);
-    const after = getFixturePath(`after.${format}`);
-    expect(gendiff(before, after)).toBe(expected);
+    const beforeConfigPath = getFixturePath(`before.${format}`);
+    const afterConfigPath = getFixturePath(`after.${format}`);
+    expect(gendiff(beforeConfigPath, afterConfigPath)).toBe(expected);
   });
 });
 
 describe('test plain formatter', () => {
   const expected = readFile('result_plain.txt');
   test.each(formats)('compare %s files', (format) => {
-    const before = getFixturePath(`before.${format}`);
-    const after = getFixturePath(`after.${format}`);
-    expect(gendiff(before, after, 'plain')).toBe(expected);
+    const beforeConfigPath = getFixturePath(`before.${format}`);
+    const afterConfigPath = getFixturePath(`after.${format}`);
+    expect(gendiff(beforeConfigPath, afterConfigPath, 'plain')).toBe(expected);
   });
 });
 
@@ -29,9 +29,9 @@ describe('test json formatter', () => {
   const jsonResult = readFile('result_json.txt');
   const expected = JSON.parse(jsonResult);
   test.each(formats)('compare %s files', (format) => {
-    const before = getFixturePath(`before.${format}`);
-    const after = getFixturePath(`after.${format}`);
-    const diff = gendiff(before, after, 'json');
+    const beforeConfigPath = getFixturePath(`before.${format}`);
+    const afterConfigPath = getFixturePath(`after.${format}`);
+    const diff = gendiff(beforeConfigPath, afterConfigPath, 'json');
     expect(JSON.parse(diff)).toEqual(expected);
   });
 });

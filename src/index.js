@@ -1,6 +1,6 @@
 import path from 'path';
 import { readFileSync } from 'fs';
-import parse from './parsers';
+import parse from './parser';
 import buildDiff from './builder';
 import render from './formatters';
 
@@ -12,9 +12,9 @@ const getConfigData = (configPath) => {
   };
 };
 
-const genDiff = (configFile1, configFile2, format = 'tree') => {
-  const configData1 = getConfigData(configFile1);
-  const configData2 = getConfigData(configFile2);
+const genDiff = (configFilepath1, configFilepath2, format = 'tree') => {
+  const configData1 = getConfigData(configFilepath1);
+  const configData2 = getConfigData(configFilepath2);
   const configObj1 = parse(configData1.data, configData1.dataFormat);
   const configObj2 = parse(configData2.data, configData2.dataFormat);
   const diff = buildDiff(configObj1, configObj2);
