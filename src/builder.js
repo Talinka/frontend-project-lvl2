@@ -1,10 +1,9 @@
 import { has, union } from 'lodash';
 
-const buildSimpleNode = (key, value, state) => ({
+const buildSimpleNode = (key, value, type) => ({
   key,
   value,
-  state,
-  type: 'simple',
+  type,
 });
 
 const buildDiff = (obj1, obj2) => {
@@ -13,7 +12,7 @@ const buildDiff = (obj1, obj2) => {
   const diffs = keys.map((key) => {
     if (has(obj1, key) && has(obj2, key)) {
       if (obj1[key] instanceof Object && obj2[key] instanceof Object) {
-        return { key, children: buildDiff(obj1[key], obj2[key]), type: 'complex' };
+        return { key, children: buildDiff(obj1[key], obj2[key]), type: 'nested' };
       }
       if (obj1[key] !== obj2[key]) {
         const node = buildSimpleNode(key, obj2[key], 'changed');

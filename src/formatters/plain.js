@@ -1,3 +1,5 @@
+import { flattenDeep } from 'lodash';
+
 const getValueStr = (val) => {
   if (val instanceof Object) {
     return '[complex value]';
@@ -5,32 +7,27 @@ const getValueStr = (val) => {
   return (typeof val === 'string') ? `'${val}'` : val;
 };
 
-const stringify = (keys, { state, value, oldValue }) => {
-  const base = `Property '${keys.join('.')}' was`;
-  switch (state) {
-    case 'added':
-      return `${base} added with value: ${getValueStr(value)}`;
-    case 'deleted':
-      return `${base} deleted`;
-    case 'changed':
-      return `${base} changed from ${getValueStr(oldValue)} to ${getValueStr(value)}`;
-    case 'unchanged':
-      return '';
-    default:
-      throw new Error(`Unknown state: ${state}`);
-  }
-};
+const stringify = (nodes, keys) => nodes
+  .filter((node) => node.type !== 'unchanged')
+  .map((node) => {
+    const base = `Property '${[...keys, node.key].join('.')}' was`;
+    switch (node.type) {
+      case 'added':
+        return `${base} added with value: ${getValueStr(node.value)}`;
+      case 'deleted':
+        return `${base} deleted`;
+      case 'changed':
+        return `${base} changed from ${getValueStr(node.oldValue)} to ${getValueStr(node.value)}`;
+      case 'nested':
+        return stringify(node.children, [...keys, node.key]);
+      default:
+        throw new Error(`Unknown type: ${node.type}`);
+    }
+  });
 
-const render = (diffObj) => {
-  const iter = (accKeys, obj) => obj
-    .map((item) => {
-      const newKey = [...accKeys, item.key];
-      return (item.type === 'complex') ? iter(newKey, item.children) : stringify(newKey, item);
-    })
-    .filter((x) => x)
-    .join('\n');
-
-  return iter([], diffObj);
+const render = (diffObject) => {
+  const elements = flattenDeep(stringify(diffObject, []));
+  return elements.join('\n');
 };
 
 export default render;

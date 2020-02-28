@@ -13,11 +13,11 @@ program
     console.log(result);
   });
 
-program.exitOverride();
-
 try {
   program.parse(process.argv);
-} catch (err) {
-  console.error(err.message);
+} catch (error) {
+  if (!(error instanceof program.CommanderError)) {
+    console.error(error.message);
+  }
   process.exit(1);
 }

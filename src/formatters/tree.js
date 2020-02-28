@@ -1,3 +1,5 @@
+import { flatten } from 'lodash';
+
 const getOffset = (level) => ' '.repeat(4 * level);
 
 const stringifyVal = (value, level) => {
@@ -9,36 +11,31 @@ const stringifyVal = (value, level) => {
   return `{\n${lines.join('\n')}\n${getOffset(level)}}`;
 };
 
-const stringifyItem = (item, level) => {
+const stringify = (nodes, level) => {
   const offset = getOffset(level - 1);
-  const infoStr = (value) => `${item.key}: ${stringifyVal(value, level)}`;
-  switch (item.state) {
-    case 'added':
-      return `${offset}  + ${infoStr(item.value)}`;
-    case 'deleted':
-      return `${offset}  - ${infoStr(item.value)}`;
-    case 'unchanged':
-      return `${offset}    ${infoStr(item.value)}`;
-    case 'changed':
-      return `${offset}  + ${infoStr(item.value)}\n`
-        + `${offset}  - ${infoStr(item.oldValue)}`;
-    default:
-      throw new Error(`Unknown state: ${item.state}`);
-  }
+  const lines = nodes.map((node) => {
+    const infoStr = (value) => `${node.key}: ${stringifyVal(value, level)}`;
+    switch (node.type) {
+      case 'added':
+        return `${offset}  + ${infoStr(node.value)}`;
+      case 'deleted':
+        return `${offset}  - ${infoStr(node.value)}`;
+      case 'unchanged':
+        return `${offset}    ${infoStr(node.value)}`;
+      case 'changed':
+        return [
+          `${offset}  + ${infoStr(node.value)}`,
+          `${offset}  - ${infoStr(node.oldValue)}`,
+        ];
+      case 'nested':
+        return `${getOffset(level)}${node.key}: ${stringify(node.children, level + 1)}`;
+      default:
+        throw new Error(`Unknown type: ${node.type}`);
+    }
+  });
+  return `{\n${flatten(lines).join('\n')}\n${offset}}`;
 };
 
-const render = (diffObj) => {
-  const iter = (obj, level = 1) => {
-    const result = obj.map((item) => {
-      if (item.type === 'complex') {
-        return `${getOffset(level)}${item.key}: ${iter(item.children, level + 1)}`;
-      }
-      return stringifyItem(item, level);
-    });
-    return `{\n${result.join('\n')}\n${getOffset(level - 1)}}`;
-  };
-
-  return iter(diffObj);
-};
+const render = (diffObject) => stringify(diffObject, 1);
 
 export default render;

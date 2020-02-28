@@ -1,64 +1,56 @@
 [
   {
     "key":"common",
-    "type":"complex",
+    "type":"nested",
     "children":[
       {
         "key":"follow",
-        "type":"simple",
         "value":false,
-        "state":"added"
+        "type":"added"
       },
       {
         "key":"setting1",
-        "type":"simple",
         "value":"Value 1",
-        "state":"unchanged"
+        "type":"unchanged"
       },
       {
         "key":"setting2",
-        "type":"simple",
         "value":200,
-        "state":"deleted"
+        "type":"deleted"
       },
       {
         "key":"setting3",
-        "type":"simple",
         "value":{
           "key":"value"
         },
         "oldValue":true,
-        "state":"changed"
+        "type":"changed"
       },
       {
         "key":"setting4",
-        "type":"simple",
         "value":"blah blah",
-        "state":"added"
+        "type":"added"
       },
       {
         "key":"setting5",
-        "type":"simple",
         "value":{
           "key5":"value5"
         },
-        "state":"added"
+        "type":"added"
       },
       {
         "key":"setting6",
-        "type":"complex",
+        "type":"nested",
         "children":[
           {
             "key":"key",
-            "type":"simple",
             "value":"value",
-            "state":"unchanged"
+            "type":"unchanged"
           },
           {
             "key":"ops",
-            "type":"simple",
             "value":"vops",
-            "state":"added"
+            "type":"added"
           }
         ]
       }
@@ -66,46 +58,41 @@
   },
   {
     "key":"group1",
-    "type":"complex",
+    "type":"nested",
     "children":[
       {
         "key":"baz",
-        "type":"simple",
         "value":"bars",
         "oldValue":"bas",
-        "state":"changed"
+        "type":"changed"
       },
       {
         "key":"foo",
-        "type":"simple",
         "value":"bar",
-        "state":"unchanged"
+        "type":"unchanged"
       },
       {
         "key":"nest",
-        "type":"simple",
         "value":"str",
         "oldValue":{
           "key":"value"
         },
-        "state":"changed"
+        "type":"changed"
       }
     ]
   },
   {
     "key":"group2",
-    "type":"simple",
     "value":{
       "abc":12345
     },
-    "state":"deleted"
+    "type":"deleted"
   },
   {
     "key":"group3",
-    "type":"simple",
     "value":{
       "fee":100500
     },
-    "state":"added"
+    "type":"added"
   }
 ]
